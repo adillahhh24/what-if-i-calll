@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WHAT IF I CALL</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #f8edf2;
+      background:
+        radial-gradient(ellipse at top, #382437 0%, transparent 55%),
+        linear-gradient(145deg, #100e16, #21131f, #100e16);
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .symbol {
+      font-size: 25px;
+      color: #e5a9c2;
+      margin-bottom: 22px;
+    }
+
+    .subtitle {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: #c8a9b9;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 8vw, 54px);
+      font-weight: normal;
+      letter-spacing: 5px;
+      margin: 0 0 16px;
+    }
+
+    .description {
+      color: #b9a8b5;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      line-height: 1.8;
+      margin-bottom: 50px;
+    }
+
+    .lyric-box {
+      min-height: 125px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    #lyric {
+      font-size: clamp(23px, 5vw, 34px);
+      line-height: 1.6;
+      color: #fff0f5;
+      overflow-wrap: anywhere;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: #e5a9c2;
+      margin-left: 4px;
+      vertical-align: -2px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    button {
+      border: 1px solid #805b72;
+      border-radius: 30px;
+      padding: 13px 25px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    #startBtn {
+      color: #24151f;
+      background: #e5b4c9;
+    }
+
+    #stopBtn {
+      color: #f8edf2;
+      background: transparent;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.12);
+    }
+
+    button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 4px;
+    }
+
+    #status {
+      min-height: 20px;
+      margin-top: 28px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #ad91a2;
+      letter-spacing: 1px;
+    }
+
+    .footer {
+      margin-top: 55px;
+      color: #806b7b;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 32px 8px;
+      }
+
+      h1 {
+        letter-spacing: 3px;
+      }
+
+      .description {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <div class="symbol">♡</div>
+
+    <div class="subtitle">A LITTLE STORY</div>
+
+    <h1>WHAT IF I CALL</h1>
+
+    <p class="description">
+      Some feelings are easier to write<br>
+      than to say out loud.
+    </p>
+
+    <div class="lyric-box">
+      <div>
+        <span id="lyric"></span><span
+          id="cursor"
+          class="cursor"
+          hidden
+        ></span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" type="button">
+        ♡ Mulai Lirik
+      </button>
+
+      <button id="stopBtn" type="button">
+        ■ Berhenti
+      </button>
+    </div>
+
+    <div id="status" aria-live="polite">
+      Tekan Mulai Lirik
+    </div>
+
+    <div class="footer">
+      MADE WITH FEELING ♡
+    </div>
+  </main>
+
+  <script>
+    // GANTI atau TAMBAHKAN lirikmu di bagian ini.
+    // Angka 4000 berarti jeda 4 detik setelah satu lirik selesai.
+
+    const lines = [
+      ["You know it's true", 4000],
+      ["Yeah, I miss you", 4000],
+      ["You know it's true", 4000],
+      ["So, what if I call?", 4000],
+
+      // ["And you pick up the phone", 4000],
+      // ["And i use holiday", 3000]
+      // ["To make  may way to your ghost", 4000],
+      // ["oh, what if you're lonely", 3000],
+      // ["Tou know i am too ', 3000],
+      // ["And i get the change to say", 3000],
+      // ["Marry christmas i miss you", 4000],
+      // ["I miss you", 3000],
+    ];
+
+    const lyricElement = document.getElementById("lyric");
+    const cursor = document.getElementById("cursor");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const statusElement = document.getElementById("status");
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let timer = null;
+    let isPlaying = false;
+    let runId = 0;
+
+    // Menampilkan lirik huruf demi huruf.
+    function typeLyric(currentRun) {
+      if (!isPlaying || currentRun !== runId) return;
+
+      const currentLine = lines[lineIndex];
+      const text = currentLine[0];
+
+      if (charIndex < text.length) {
+        lyricElement.textContent += text.charAt(charIndex);
+        charIndex++;
+
+        timer = setTimeout(
+          () => typeLyric(currentRun),
+          90
+        );
+      } else {
+        // Tunggu sebelum beralih ke lirik berikutnya.
+        timer = setTimeout(() => {
+          if (!isPlaying || currentRun !== runId) return;
+
+          lineIndex++;
+          charIndex = 0;
+
+          if (lineIndex < lines.length) {
+            lyricElement.textContent = "";
+            typeLyric(currentRun);
+          } else {
+            finishLyrics();
+          }
+        }, currentLine[1]);
+      }
+    }
+
+    function startLyrics() {
+      if (lines.length === 0) {
+        statusElement.textContent = "Tambahkan lirik terlebih dahulu.";
+        return;
+      }
+
+      // Jika sedang berjalan, tombol ini tidak memulai duplikat.
+      if (isPlaying) return;
+
+      clearTimeout(timer);
+      runId++;
+      const currentRun = runId;
+
+      lineIndex = 0;
+      charIndex = 0;
+      isPlaying = true;
+
+      lyricElement.textContent = "";
+      cursor.hidden = false;
+      startBtn.textContent = "♡ Sedang Diputar";
+      startBtn.disabled = true;
+      statusElement.textContent = "Lirik sedang berjalan...";
+
+      typeLyric(currentRun);
+    }
+
+    function finishLyrics() {
+      isPlaying = false;
+      clearTimeout(timer);
+
+      cursor.hidden = true;
+      startBtn.disabled = false;
+      startBtn.textContent = "↻ Putar Lagi";
+      statusElement.textContent = "Lirik selesai ♡";
+    }
+
+    function stopLyrics() {
+      // Membatalkan timer lama agar tidak berjalan lagi.
+      runId++;
+      clearTimeout(timer);
+
+      isPlaying = false;
+      lineIndex = 0;
+      charIndex = 0;
+
+      lyricElement.textContent = "";
+      cursor.hidden = true;
+      startBtn.disabled = false;
+      startBtn.textContent = "♡ Mulai Lirik";
+      statusElement.textContent = "Pemutaran dihentikan.";
+    }
+
+    startBtn.addEventListener("click", startLyrics);
+    stopBtn.addEventListener("click", stopLyrics);
+  </script>
+</body>
+</html>
